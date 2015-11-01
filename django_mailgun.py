@@ -130,7 +130,13 @@ class MailgunBackend(BaseEmailBackend):
                         ", ".join(map(force_text, email_message.reply_to)),
                     ))
             except AttributeError:
+                if email_message.extra_headers.has_key('h:Reply-To'):
+                    post_data.append((
+                        "h:Reply-To",
+                        ", ".join(map(force_text, email_message.extra_headers['h:Reply-To'])),
+                    ))
                 pass
+
 
             if email_message.attachments:
                 for attachment in email_message.attachments:
